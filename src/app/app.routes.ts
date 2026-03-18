@@ -19,5 +19,6 @@ export const routes: Routes = [
     { path: 'products', loadComponent: () => import('./products/products').then(m => m.ProductsComponent) },
     { path: 'products/:id', loadComponent: () => import('./products/product-details').then(m => m.ProductDetailsComponent) },
     { path: 'users', loadComponent: () => import('./users/users').then(m => m.UsersComponent) },
-    { path: '', redirectTo: 'theory', pathMatch: 'full' }
+    { path: '', redirectTo: 'theory', pathMatch: 'full' },
+    { path: '**', loadComponent: () => import('./not-found/not-found').then(m => m.PageNotFoundComponent) }
 ];

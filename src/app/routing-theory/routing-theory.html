@@ -179,6 +179,37 @@
         </table>
     </section>
 
+    <!-- CORE DIRECTIVES & CONFIGURATION -->
+    <section class="core-directives-section">
+        <div class="pipeline-header">
+            <h2>Core Directives & Configuration ⚙️</h2>
+            <p>The essential building blocks of Angular Routing.</p>
+        </div>
+
+        <div class="core-grid">
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge declarative">Configuration</span>
+                    <h3>RouterModule / provideRouter</h3>
+                </div>
+                <p>Register your routes with the application. Modern apps use <code
+                        class="inline-code">provideRouter</code> in
+                    <code class="inline-code">app.config.ts</code>.
+                </p>
+                <code class="block-code">provideRouter([ {{ '{' }} path: 'home', component: ... {{ '}' }} ])</code>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge imperative">Directive</span>
+                    <h3>Router Outlet</h3>
+                </div>
+                <p>The dynamic injection point. Tells Angular WHERE to render the matched component.</p>
+                <code class="block-code">&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
+            </div>
+        </div>
+    </section>
+
     <!-- OUTLET MECHANICS -->
     <section class="outlet-mechanics-section">
         <div class="pipeline-header">
@@ -213,22 +244,32 @@
         </div>
 
         <div class="mechanics-note">
-            <strong>Key Insight:</strong> Components inside the outlet are <b>siblings</b> to the elements around the
-            outlet, not necessarily "children" of the component they are injected into in the traditional DOM sense!
+            <p><strong>Key Insight:</strong> The <b>Router Outlet</b> is just a <b>placeholder</b>, not a container.</p>
+            <p>It doesn't wrap the new page. It just tells Angular: <i>"Put the new page right here, next to me."</i>
+            </p>
+            <p>Therefore, the new page and the outlet are <b>siblings</b>, not parent and child!</p>
         </div>
     </section>
 
     <!-- STATIC CONCEPTS (from previous step) -->
     <div class="concepts-grid">
         <div class="concept-card declaration">
+            <span class="type-badge declarative">Logic</span>
             <h3>Route Declaration</h3>
-            <p>The foundation of mapping URLs to Components.</p>
-            <code>{{ '{ path: "routing", component: ... }' }}</code>
+            <p>Mapping URLs to Components.</p>
+            <code class="block-code">{{ '{ path: "home", component: ... }' }}</code>
         </div>
         <div class="concept-card outlet">
+            <span class="type-badge imperative">Visual</span>
             <h3>Router Outlet</h3>
-            <p>The dynamic injection point for child views.</p>
-            <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
+            <p>The dynamic injection point.</p>
+            <code class="block-code">&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
+        </div>
+        <div class="concept-card specialized">
+            <span class="type-badge absolute">Special</span>
+            <h3>Wildcard & Redirects</h3>
+            <p>Handling 404s and fallback routes.</p>
+            <code class="block-code">{{ '{ path: "**", component: ... }' }}</code>
         </div>
     </div>
 </div>
