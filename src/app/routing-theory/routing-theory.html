@@ -1,0 +1,234 @@
+<div class="routing-theory-container">
+    <header class="hero">
+        <div class="badge">SESSION: DATA FLOW & ANIMATIONS</div>
+        <h1>Angular Routing Engine 🛣️</h1>
+        <p>Visualizing how data travels between routes.</p>
+    </header>
+
+    <!-- DATA PIPELINE VISUALIZATION -->
+    <section class="pipeline-section">
+        <div class="pipeline-header">
+            <h2>Interactive Data Pipeline</h2>
+            <p>Choose a method to see how values are <b>passed</b> and <b>retrieved</b>.</p>
+        </div>
+
+        <div class="pipeline-viz">
+            <div class="viz-node sender">
+                <div class="node-label">SENDER</div>
+                <div class="node-content">
+                    <button (click)="simulatePass('params')" [class.active]="activeSim() === 'params'">ID
+                        (Param)</button>
+                    <button (click)="simulatePass('query')" [class.active]="activeSim() === 'query'">Filter
+                        (Query)</button>
+                    <button (click)="simulatePass('state')" [class.active]="activeSim() === 'state'">Object
+                        (State)</button>
+                </div>
+            </div>
+
+            <div class="viz-path">
+                <div class="path-line"></div>
+                @if (isAnimating()) {
+                <div class="data-packet" [@dataFlow]>
+                    {{ packetContent() }}
+                </div>
+                }
+            </div>
+
+            <div class="viz-node receiver">
+                <div class="node-label">RECEIVER</div>
+                <div class="node-content">
+                    <div class="outlet-box">
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation-box" *ngIf="activeSim()">
+            <h3>{{ simTitle() }}</h3>
+            <div class="code-split">
+                <div class="code-side">
+                    <h5>How to PASS 📤</h5>
+                    <code>{{ passCode() }}</code>
+                </div>
+                <div class="code-side">
+                    <h5>How to GET 📥</h5>
+                    <code>{{ getCode() }}</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NAVIGATION METHODS COMPARISON -->
+    <section class="nav-methods-section">
+        <div class="pipeline-header">
+            <h2>Navigation Methods Comparison</h2>
+            <p>Understand the difference between <b>Declarative</b> and <b>Imperative</b> navigation.</p>
+        </div>
+
+        <div class="methods-grid">
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge declarative">Declarative</span>
+                    <h3>routerLink</h3>
+                </div>
+                <p>Best for simple template-based navigation. Handles link styling and accessibility automatically.</p>
+                <code>&lt;a [routerLink]="['details', 101]"&gt;View&lt;/a&gt;</code>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge imperative">Imperative</span>
+                    <h3>router.navigate()</h3>
+                </div>
+                <p>Navigates based on an array of commands. Supports relative paths and dynamic segments easily.</p>
+                <code>this.router.navigate(['details', id], {{ '{' }} relativeTo: this.route {{ '}' }});</code>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge imperative">Imperative</span>
+                    <h3>router.navigateByUrl()</h3>
+                </div>
+                <p>Navigates to an absolute string URL. Precise and simple for fixed paths.</p>
+                <code>this.router.navigateByUrl('/routing/details/101');</code>
+            </div>
+        </div>
+
+        <div class="relative-routing-box">
+            <div class="box-header">
+                <h3>Absolute vs Relative Routing</h3>
+                <p>How the path is interpreted by Angular.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-side">
+                    <span class="type-badge absolute">Absolute</span>
+                    <p>Starts from the <b>root</b> of the application (uses `/`).</p>
+                    <code>['/routing', 'details']</code>
+                    <p class="path-note">Result: <b>example.com/routing/details</b></p>
+                </div>
+                <div class="comparison-side">
+                    <span class="type-badge relative-path">Relative</span>
+                    <p>Appends to the <b>current</b> URL active segment.</p>
+                    <code>['details']</code>
+                    <p class="path-note">If at /routing, result: <b>example.com/routing/details</b></p>
+                </div>
+            </div>
+
+            <div class="pro-tip">
+                <strong>💡 PRO TIP:</strong> In TypeScript, use <code>{{ '{' }} relativeTo: this.route {{ '}' }}</code>
+                to enable
+                relative navigation from your current component.
+            </div>
+        </div>
+
+        <!-- NAVIGATION EXTRAS -->
+        <div class="extras-section">
+            <div class="pipeline-header">
+                <h2>The "Navigation Extras" Object ⚙️</h2>
+                <p>Advanced configuration for fine-tuning your navigation.</p>
+            </div>
+
+            <div class="extras-grid">
+                <div class="extra-card highlight">
+                    <div class="extra-header">
+                        <h4>relativeTo</h4>
+                    </div>
+                    <p>Required for **Relative Navigation** in TypeScript. Tells Angular which route to measure the
+                        distance from.</p>
+                    <code>this.router.navigate(['details'], {{ '{' }} relativeTo: this.route {{ '}' }});</code>
+                </div>
+
+                <div class="extra-card">
+                    <div class="extra-header">
+                        <h4>preserveQueryParams: true</h4>
+                    </div>
+                    <p>Keeps existing Query Params (e.g. <code>?id=123</code>) active after you navigate to a new page.
+                    </p>
+                    <code>this.router.navigate(['/next'], {{ '{' }} preserveQueryParams: true {{ '}' }});</code>
+                </div>
+            </div>
+        </div>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>router.navigate()</th>
+                    <th>router.navigateByUrl()</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Input Type</b></td>
+                    <td>Array of Commands</td>
+                    <td>String (Absolute URL)</td>
+                </tr>
+                <tr>
+                    <td><b>Relative Routing</b></td>
+                    <td>✅ Supported</td>
+                    <td>❌ Not Supported</td>
+                </tr>
+                <tr>
+                    <td><b>Use Case</b></td>
+                    <td>Dynamic segments / Relative Nav</td>
+                    <td>Simple Absolute Paths</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- OUTLET MECHANICS -->
+    <section class="outlet-mechanics-section">
+        <div class="pipeline-header">
+            <h2>The Router Outlet Secret 🗝️</h2>
+            <p>Understand how components actually appear on the screen.</p>
+        </div>
+
+        <div class="mechanics-comparison">
+            <div class="mechanics-card static">
+                <div class="card-label">❌ Traditional Child</div>
+                <h4>Static Declaration</h4>
+                <p>Declared directly in the template. Always present, hard-coded relationship.</p>
+                <code>&lt;app-child&gt;&lt;/app-child&gt;</code>
+                <div class="mechanics-viz">
+                    <div class="box parent">Parent</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="box child">Child</div>
+                </div>
+            </div>
+
+            <div class="mechanics-card dynamic">
+                <div class="card-label">✅ Routed View</div>
+                <h4>Dynamic Injection</h4>
+                <p>The Router "places" the component here based on the URL. Decoupled and flexible.</p>
+                <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
+                <div class="mechanics-viz">
+                    <div class="box router">Router Engine</div>
+                    <div class="arrow">💉</div>
+                    <div class="box outlet-target">Router Outlet</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mechanics-note">
+            <strong>Key Insight:</strong> Components inside the outlet are <b>siblings</b> to the elements around the
+            outlet, not necessarily "children" of the component they are injected into in the traditional DOM sense!
+        </div>
+    </section>
+
+    <!-- STATIC CONCEPTS (from previous step) -->
+    <div class="concepts-grid">
+        <div class="concept-card declaration">
+            <h3>Route Declaration</h3>
+            <p>The foundation of mapping URLs to Components.</p>
+            <code>{{ '{ path: "routing", component: ... }' }}</code>
+        </div>
+        <div class="concept-card outlet">
+            <h3>Router Outlet</h3>
+            <p>The dynamic injection point for child views.</p>
+            <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
+        </div>
+    </div>
+</div>

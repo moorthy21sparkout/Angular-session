@@ -1,0 +1,35 @@
+<div class="users-page">
+    <header>
+        <h1>User Directory (CSR Demo)</h1>
+        <p>This data is fetched <strong>ONLY</strong> in the browser. The server sends an empty shell.</p>
+    </header>
+
+    @if (loading()) {
+    <div class="loader">
+        <div class="spinner"></div>
+        <p>Fetching data from browser...</p>
+    </div>
+    } @else {
+    <div class="user-list">
+        @for (user of users(); track user.id) {
+        <div class="user-card">
+            <div class="avatar">{{ user.name.charAt(0) }}</div>
+            <div class="details">
+                <h3>{{ user.name }}</h3>
+                <p>{{ user.email }}</p>
+                <small>{{ user.website }}</small>
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    <div class="csr-info">
+        <h3>🔍 How to verify CSR?</h3>
+        <p>
+            Right-click on this page and select <strong>"View Page Source"</strong>.
+            You will <strong>NOT</strong> find any user names (like Leanne Graham) in the HTML source code.
+            They are missing because the server skipped the data fetch!
+        </p>
+    </div>
+</div>

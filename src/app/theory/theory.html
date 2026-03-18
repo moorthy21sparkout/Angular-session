@@ -1,0 +1,358 @@
+<div class="theory-container">
+    <header class="hero">
+        <div class="badge">v5.0 PRO ANIMATIONS</div>
+        <h1>The Render Engine ⚙️</h1>
+        <p>A high-fidelity look at how templates are delivered and rendered.</p>
+    </header>
+
+    <!-- Step Controls -->
+    <section class="controls">
+        <div class="control-card ssr" (click)="startFlow('ssr')">
+            <div class="icon">🚀</div>
+            <h3>SSR Engine</h3>
+            <p>Ready-to-View HTML Delivery</p>
+        </div>
+        <div class="control-card csr" (click)="startFlow('csr')">
+            <div class="icon">🏗️</div>
+            <h3>CSR Engine</h3>
+            <p>Client-Side Blueprint Render</p>
+        </div>
+        <div class="control-card full-ssr" (click)="startFlow('full-ssr')">
+            <div class="icon">🖥️</div>
+            <h3>Full Page SSR</h3>
+            <p>Total Server Construction</p>
+        </div>
+    </section>
+
+    <!-- The Live Stage -->
+    @if (activeFlow()) {
+    <div class="stage animate-fade-in">
+        <div class="stage-info">
+            <h2>
+                @if (activeFlow() === 'ssr') { Server-Side Pipeline }
+                @else if (activeFlow() === 'full-ssr') { Full Page SSR Pipeline }
+                @else { Client-Side Pipeline }
+            </h2>
+            <div class="status-box" [class.ssr]="activeFlow() === 'ssr'" [class.full-ssr]="activeFlow() === 'full-ssr'">
+                {{ currentStatus() }}</div>
+        </div>
+
+        <div class="visualizer">
+            <!-- Left Side: Source -->
+            <div class="v-node" [class.active]="activeSide() === 'source'">
+                <div class="label">{{ activeFlow() === 'ssr' ? 'Server' : 'Server' }}</div>
+                <div class="box-visual">
+                    @if (activeSide() === 'source' && activeFlow() === 'ssr') {
+                    <div class="mini-workshop" @brickAnimation>
+                        @for (b of bricks(); track $index) {
+                        <div class="m-brick">&lt;{{b}}&gt;</div>
+                        }
+                    </div>
+                    } @else if (activeSide() === 'source' && activeFlow() === 'csr') {
+                    <div class="blueprint-v">Blueprint 📄</div>
+                    }
+                </div>
+            </div>
+
+            <!-- Path: Network -->
+            <div class="v-path">
+                <div class="v-packet" [@packetFlow]="packetState()">
+                    {{ packetIcon() }}
+                </div>
+            </div>
+
+            <!-- Right Side: Destination -->
+            <div class="v-node" [class.active]="activeSide() === 'dest'">
+                <div class="label">Browser</div>
+                <div class="box-visual">
+                    @if (activeSide() === 'dest') {
+                    <div class="mini-workshop" @brickAnimation>
+                        @for (b of bricks(); track $index) {
+                        <div class="m-brick" [class.csr]="activeFlow() === 'csr'">&lt;{{b}}&gt;</div>
+                        }
+                    </div>
+                    } @else {
+                    <div class="wait-v">Waiting...</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="detail-panel">
+            <h3>Phase {{ stepCount() }}: {{ detailTitle() }}</h3>
+            <p>{{ detailText() }}</p>
+        </div>
+
+        <!-- SEO Fundamentals -->
+        <section class="seo-fundamentals animate-fade-in">
+            <div class="f-header">
+                <h2>🔍 What is SEO? (The Engine of Discovery)</h2>
+                <p>Search Engine Optimization (SEO) is the art of making your website visible to the world.</p>
+            </div>
+
+            <div class="analogy-box">
+                <div class="analogy-card">
+                    <div class="a-icon">🏪</div>
+                    <div class="a-content">
+                        <h5>The "Real Life" Analogy</h5>
+                        <p>Imagine you open a beautiful store <strong>without a sign</strong> in a dark alley. Even if
+                            you
+                            have the best products, nobody knows you exist. SEO is the <strong>bright neon sign</strong>
+                            and the <strong>GPS listing</strong> that brings customers to your door.</p>
+                    </div>
+                </div>
+                <div class="analogy-card">
+                    <div class="a-icon">📚</div>
+                    <div class="a-content">
+                        <h5>The Digital Analogy</h5>
+                        <p>Google is like a <strong>giant library</strong>. SEO is the metadata on your book's cover.
+                            Without it, Google puts your "book" in a <strong>hidden basement</strong>. With it, you're
+                            on the
+                            <strong>Top Shelf</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-highlights">
+                <div class="r-item">
+                    <span class="r-icon">🏗️</span>
+                    <strong>Trust:</strong> Top-ranking sites are seen as more credible.
+                </div>
+                <div class="r-item">
+                    <span class="r-icon">💰</span>
+                    <strong>Revenue:</strong> More visibility = More customers = More growth.
+                </div>
+                <div class="r-item">
+                    <span class="r-icon">🚀</span>
+                    <strong>Speed:</strong> Good SEO often means a faster, more usable website.
+                </div>
+            </div>
+
+            <div class="how-to-use">
+                <h4>🛡️ How to use SEO? (Simple Steps)</h4>
+                <div class="steps-grid">
+                    <div class="s-card">
+                        <h5>1. Keywords</h5>
+                        <p>Research what users type (e.g., "Best Shoes").</p>
+                    </div>
+                    <div class="s-card">
+                        <h5>2. Metadata</h5>
+                        <p>Tell bots exactly what the page is about.</p>
+                    </div>
+                    <div class="s-card">
+                        <h5>3. Content</h5>
+                        <p>Write useful stuff that people actually want to read.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step-by-Step Integration Guide -->
+        <section class="integration-guide animate-fade-in">
+            <h2>🛠️ How to Integrate (Step-by-Step)</h2>
+
+            <div class="guide-grid">
+                <!-- SSR Integration -->
+                <div class="guide-card ssr">
+                    <div class="card-header">
+                        <span class="step-num">01</span>
+                        <h3>Enable SSR</h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li><strong>Run Command:</strong> <code>ng add &#64;angular/ssr</code></li>
+                            <li><strong>Files Created:</strong> <code>server.ts</code>,
+                                <code>app.config.server.ts</code>
+                            </li>
+                            <li><strong>Key Step:</strong> Update <code>app.config.ts</code> with
+                                <code>provideClientHydration()</code>.
+                            </li>
+                        </ul>
+                        <div class="pro-tip">💡 SSR is best for SEO and public landing pages!</div>
+                        <button class="demo-btn ssr" (click)="openDemoModal('ssr')">🚀 View Backend Prep</button>
+                    </div>
+                </div>
+
+                <!-- CSR Integration -->
+                <div class="guide-card csr">
+                    <div class="card-header">
+                        <span class="step-num">02</span>
+                        <h3>Implement CSR</h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li><strong>Data Guard:</strong> Use <code>isPlatformBrowser</code>.</li>
+                            <li><strong>Lifecycle:</strong> Fetch data inside <code>ngOnInit()</code>.</li>
+                            <li><strong>State:</strong> Handle Loading/Error states manually.</li>
+                        </ul>
+                        <div class="pro-tip">💡 CSR is perfect for private portals and admin dashboards!</div>
+                        <button class="demo-btn csr" (click)="openDemoModal('csr')">🏗️ View Client Build</button>
+                    </div>
+                </div>
+
+                <!-- SEO Mastery -->
+                <div class="guide-card seo">
+                    <div class="card-header">
+                        <span class="step-num">03</span>
+                        <h3>SEO Fast-Track</h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li><strong>Dynamic Meta:</strong> Use <code>Meta</code> service for tags.</li>
+                            <li><strong>Title Control:</strong> Use <code>Title</code> service for page titles.</li>
+                            <li><strong>Pre-rendering:</strong> Bots see full HTML immediately without JS.</li>
+                        </ul>
+                        <div class="pro-tip">💡 Fast SEO: Give bots exact H1 and Meta tags on the first delivery!</div>
+                    </div>
+                </div>
+
+                <!-- Backend Internal -->
+                <div class="guide-card backend">
+                    <div class="card-header">
+                        <span class="step-num">04</span>
+                        <h3>Backend Engine</h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li><strong>Node.js:</strong> Handles the incoming HTTP request.</li>
+                            <li><strong>Express:</strong> Often used as the server engine.</li>
+                            <li><strong>Render function:</strong> <code>CommonEngine.render()</code> converts app to
+                                string.</li>
+                        </ul>
+                        <div class="pro-tip">💡 The backend acts as a "Headless Browser" to build your page!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced: Full Source Preparation -->
+            <div class="advanced-audit animate-fade-in">
+                <h4>📂 Full Source SSR Preparation (Audit Guide)</h4>
+                <div class="audit-grid">
+                    <div class="audit-item">
+                        <h5>1. Platform Awareness</h5>
+                        <p>Inject <code>PLATFORM_ID</code> and use <code>isPlatformServer</code> /
+                            <code>isPlatformBrowser</code>.
+                        </p>
+                        <code>if (isPlatformBrowser(this.platformId)) &#123; ... &#125;</code>
+                    </div>
+                    <div class="audit-item">
+                        <h5>2. Safe Rendering</h5>
+                        <p>Avoid <code>window</code>, <code>document</code>, or <code>localStorage</code> globally. Use
+                            Angular's <code>afterNextRender</code> for DOM logic.</p>
+                    </div>
+                    <div class="audit-item">
+                        <h5>3. Transfer State</h5>
+                        <p>Enable <code>withFetch()</code> in <code>provideHttpClient</code> to cache server results for
+                            the client.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deep Dive: Backend SSR Workflow -->
+            <div class="advanced-audit animate-fade-in backend-deep-dive">
+                <h4>🔄 The Backend Rendering Cycle (SSR)</h4>
+                <div class="workflow-steps">
+                    <div class="workflow-item">
+                        <div class="w-icon">📥</div>
+                        <div class="w-text">
+                            <h5>Request Received</h5>
+                            <p>User hits the server. Node.js intercepts the URL via <code>server.ts</code>.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-item">
+                        <div class="w-icon">⚙️</div>
+                        <div class="w-text">
+                            <h5>Bootstrapping</h5>
+                            <p>Server starts a temporary instance of your app using <code>app.config.server.ts</code>.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="workflow-item">
+                        <div class="w-icon">🏗️</div>
+                        <div class="w-text">
+                            <h5>Stringify HTML</h5>
+                            <p>Angular renders the component tree to a static HTML string. Data is fetched on the
+                                server.</p>
+                        </div>
+                    </div>
+                    <div class="workflow-item">
+                        <div class="w-icon">📤</div>
+                        <div class="w-text">
+                            <h5>Initial Paint</h5>
+                            <p>HTML string + TransferState JSON is sent back. Browser paints content immediately.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="verification-steps">
+                <h4>✅ How to Verify Your Work?</h4>
+                <ol>
+                    <li>Build the app: <code>npm run build</code></li>
+                    <li>Start SSR server: <code>npm run serve:ssr:SSR</code></li>
+                    <li>Right-click page -> <strong>"View Page Source"</strong>.</li>
+                    <li>If you see your data in HTML, it's <strong>SSR</strong>. If it's a blank
+                        <code>&lt;app-root&gt;</code>, it's <strong>CSR</strong>.
+                    </li>
+                </ol>
+            </div>
+
+        </section>
+
+        <div class="footer-actions">
+            <button class="reset-btn" (click)="reset()">Reset Animation</button>
+        </div>
+    </div>
+    }
+
+    <!-- Modal Demo -->
+    @if (showDemoModal()) {
+    <div class="modal-overlay animate-fade-in" (click)="closeDemoModal()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ modalDemoType() === 'ssr' ? 'Backend' : 'Frontend' }} Page Construction</h3>
+                <button class="close-btn" (click)="closeDemoModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="demo-viz">
+                    <div class="viz-stage" [class.ssr]="modalDemoType() === 'ssr'">
+                        <div class="viz-label">{{ modalDemoType() === 'ssr' ? 'Server (Node.js)' : 'Browser' }}</div>
+                        <div class="viz-content">
+                            @for (step of demoSteps(); track $index) {
+                            <div class="viz-brick" @brickAnimation>
+                                {{ step }}
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-status-text">
+                    <strong>Status:</strong> <span>{{ demoStatus() }}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close-btn" (click)="closeDemoModal()">Close Demo</button>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Detailed Expert Grid -->
+    <section class="expert-notes">
+        <h2>Expert Review</h2>
+        <div class="note-grid">
+            <div class="note-item">
+                <h4>SSR Construction</h4>
+                <p>The server creates the <strong>DOM Tree</strong> internally using data, converts it to a string
+                    (HTML), and sends it. No browser work needed for first paint.</p>
+            </div>
+            <div class="note-item">
+                <h4>CSR Construction</h4>
+                <p>The server sends <strong>instructions</strong>. The browser downloads JS, runs it, and then the JS
+                    tells the browser how to build <strong>DOM Node</strong>.</p>
+            </div>
+        </div>
+    </section>
+</div>

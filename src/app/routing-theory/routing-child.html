@@ -1,0 +1,22 @@
+<div class="child-content">
+    <h4>📥 Data Receiver</h4>
+
+    <div class="data-grid">
+        <div class="data-item" [class.highlight]="type() === 'param'">
+            <span class="label">PARAM (ID)</span>
+            <span class="value">{{ id() || '---' }}</span>
+        </div>
+        <div class="data-item" [class.highlight]="type() === 'query'">
+            <span class="label">QUERY</span>
+            <span class="value">{{ query() || '---' }}</span>
+        </div>
+        <div class="data-item" [class.highlight]="type() === 'state'">
+            <span class="label">STATE</span>
+            <span class="value">{{ stateData() || '---' }}</span>
+        </div>
+    </div>
+
+    <div class="sync-status" *ngIf="type()">
+        <span class="pulse"></span> Active Capture: {{ type()?.toUpperCase() }}
+    </div>
+</div>

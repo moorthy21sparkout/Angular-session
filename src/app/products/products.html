@@ -1,0 +1,48 @@
+<div class="products-page">
+    <header>
+        <h1>Product Showcase (SSR Demo)</h1>
+        <p>This data is fetched on the server and pre-rendered into the HTML.</p>
+    </header>
+
+    @if (loading()) {
+    <div class="loader">Loading products...</div>
+    } @else {
+    <div class="product-grid">
+        @for (product of products(); track product.id) {
+        <div class="product-card">
+            <img [src]="product.image" [alt]="product.title">
+            <div class="content">
+                <h3>{{ product.title }}</h3>
+                <p class="price">{{ product.price | currency }}</p>
+                <p class="desc">{{ product.description.substring(0, 60) }}...</p>
+
+                <div class="actions">
+                    <!-- Method 1: RouterLink -->
+                    <a [routerLink]="['/products', product.id]" class="btn-link">
+                        Link (Param Only)
+                    </a>
+
+                    <!-- Method 2: Programmatic Navigate -->
+                    <button (click)="navigateToProduct(product.id)" class="btn-nav">
+                        Params + Query
+                    </button>
+
+                    <!-- Method 3: NavigateByUrl + State -->
+                    <button (click)="navigateToProductWithState(product)" class="btn-state">
+                        State Passing
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    <div class="ssr-info">
+        <h3>🔍 How to verify SSR?</h3>
+        <p>
+            Right-click on this page and select <strong>"View Page Source"</strong>.
+            You will find all the product titles and descriptions inside the HTML sent by the server!
+        </p>
+    </div>
+</div>
