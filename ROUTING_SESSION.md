@@ -247,3 +247,196 @@ Simply place it in your template where you want the routed components to appear.
 
 > [!TIP]
 > You can have multiple outlets by using **Named Outlets** (e.g., `<router-outlet name="sidebar"></router-outlet>`), allowing for complex dashboard layouts.
+
+---
+
+## 8. Modern Standalone Routing Features
+
+Angular 16+ introduced powerful new features for the router, especially when using Standalone Components.
+
+### `withComponentInputBinding()`
+Automatically maps route parameters, query parameters, and route data directly to component `@Input()` properties. This eliminates the need to manually inject and subscribe to `ActivatedRoute`.
+
+**Configuration:**
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [provideRouter(routes, withComponentInputBinding())]
+};
+```
+
+**Simple Idea:**
+URL → directly goes into `@Input()`
+
+**📌 Example:**
+```typescript
+@Input() id!: string;
+@Input() filter?: string;
+```
+URL: `/user/10?filter=active`
+👉 Angular will automatically do: `id = 10`, `filter = 'active'` (No need for `ActivatedRoute`!)
+
+**Usage in Component:**
+Instead of `this.route.params.subscribe(...)`, just use `@Input()`!
+```typescript
+@Component({...})
+export class ProductComponent {
+  // Matches /products/:id
+  @Input() id!: string; 
+  // Matches /products?filter=blue
+  @Input() filter?: string; 
+}
+```
+
+### `withViewTransitions()`
+Enables smooth, native page transitions using the browser's **View Transitions API** when navigating between routes, without relying on complex Angular Animations.
+
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [provideRouter(routes, withViewTransitions())]
+};
+```
+
+**Simple Idea:**
+Page change → smooth animation effect (not sudden).
+
+**📌 Example:**
+- **Without:** page instantly changes.
+- **With:** fade / smooth transition.
+- **Result:** Better UI experience.
+
+*Note: You can customize these transitions in your CSS using `::view-transition-old()` and `::view-transition-new()` pseudo-elements.*
+
+### `withInMemoryScrolling()`
+Automatically manages scroll position restoration when navigating backward or forward, or anchoring to specific elements.
+
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withInMemoryScrolling({
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled'
+    }))
+  ]
+};
+```
+
+**Simple Idea:**
+Remembers where you scrolled.
+
+**📌 Example:**
+- `scrollPositionRestoration: 'enabled'`: Go back → scroll goes to old position.
+- `anchorScrolling: 'enabled'`: `/page#section` → scrolls to that section.
+```
+
+---
+
+## 9. Advanced Route Guards (Functional Guards)
+
+Modern Angular favors **Functional Guards** over the older Class-based guards. They are simpler, more concise, and easily composable.
+
+### `CanActivateFn` (Access Control)
+Determines if a route can be activated (entered). Best for Authentication checks.
+
+```typescript
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isLoggedIn()) {
+    return true;
+  }
+  return router.parseUrl('/login'); // Redirect to login
+};
+
+// In app.routes.ts
+{ path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] }
+```
+
+### `CanMatchFn` vs `CanActivateFn`
+`CanMatchFn` checks if a route should even be *considered* during URL matching.
+If `CanMatch` returns `false`, the router acts as if the route doesn't exist and continues searching for other matches (like a 404 wildcard). 
+
+> [!IMPORTANT]
+> **Always use `CanMatch` for Lazy-Loaded Routes!**
+> If you use `CanActivate` on a lazy-loaded route, Angular will download the module's code *before* checking the guard. `CanMatch` checks the guard *before* downloading the code, saving bandwidth and improving security.
+
+### `CanDeactivateFn` (Unsaved Changes)
+Warns a user before they leave a route with unsaved form data.
+
+```typescript
+export const pendingChangesGuard: CanDeactivateFn<SignupComponent> = (component) => {
+  if (component.hasUnsavedChanges) {
+    return confirm('You have unsaved changes. Do you really want to leave?');
+  }
+  return true;
+};
+```
+
+---
+
+## 10. Route Resolvers (`ResolveFn`)
+
+Resolvers allow you to pre-fetch data *before* a route renders. This prevents 'UI jumps' or showing empty pages while data loads in `ngOnInit`. The route navigation will pause until the Resolver's Observable completes.
+
+### Defining a Resolver
+```typescript
+export const userResolver: ResolveFn<User> = (route, state) => {
+  const userId = route.paramMap.get('id')!;
+  return inject(UserService).getUserById(userId);
+};
+```
+
+### Configuring the Resolver
+```typescript
+{ 
+  path: 'user/:id', 
+  component: UserProfileComponent, 
+  resolve: { userData: userResolver } 
+}
+```
+
+### Consuming the Resolved Data
+Since data is pre-fetched, we can read it synchronously or via the `@Input()` binding (if `withComponentInputBinding` is enabled).
+
+```typescript
+@Component({...})
+export class UserProfileComponent {
+  // Auto-injected via withComponentInputBinding() matching the 'userData' key!
+  @Input() userData!: User; 
+}
+```
+
+---
+
+## 11. Deep Dive: Lazy Loading
+
+Lazy loading is essential for performance. It splits your application bundle into smaller chunks that are loaded on demand.
+
+### Lazy Loading a Single Standalone Component
+Best for individual pages (like a Settings page).
+```typescript
+{ 
+  path: 'settings', 
+  loadComponent: () => import('./settings/settings.component').then(m => m.SettingsComponent) 
+}
+```
+
+### Lazy Loading Multiple Routes (`loadChildren`)
+Best for entire feature areas with their own sub-routes (e.g., an Admin Dashboard).
+
+**admin.routes.ts**
+```typescript
+export const adminRoutes: Routes = [
+  { path: '', component: AdminDashboardComponent },
+  { path: 'users', component: AdminUsersComponent },
+  { path: 'reports', component: AdminReportsComponent }
+];
+```
+
+**app.routes.ts**
+```typescript
+{ 
+  path: 'admin', 
+  loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes) 
+}
+```

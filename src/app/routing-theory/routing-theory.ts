@@ -9,7 +9,7 @@ import { trigger, state, style, animate, transition, keyframes } from '@angular/
     imports: [CommonModule, RouterOutlet],
     animations: [
         trigger('dataFlow', [
-            transition('* => *', [
+            transition(':enter', [
                 animate('1s ease-in-out', keyframes([
                     style({ transform: 'translateX(0)', opacity: 0, offset: 0 }),
                     style({ transform: 'translateX(50px)', opacity: 1, offset: 0.5 }),
@@ -84,6 +84,15 @@ export class RoutingTheoryComponent {
                 this.startAnim();
                 this.router.navigate(['/routing', 'details', this.currentSimId.toString()]);
             }
+        }
+        else if (type === 'binding') {
+            this.simTitle.set('Modern Input Binding (Angular 16+)');
+            this.packetContent.set('id="101"');
+            this.passCode.set(`// app.config.ts\nprovideRouter(routes, withComponentInputBinding());`);
+            this.getCode.set(`// In Component:\n@Input() id!: string;\n@Input() filter?: string;\n\n// No ActivatedRoute needed!`);
+
+            this.startAnim();
+            this.router.navigate(['/routing', 'details', '101'], { queryParams: { type: 'query', val: 'BoundValue' } });
         }
     }
 

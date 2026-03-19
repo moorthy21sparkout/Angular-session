@@ -1,0 +1,201 @@
+<div class="modern-routing-container">
+    <header class="modern-hero">
+        <div class="badge" style="background: #d1fae5; color: #065f46;">SESSION: MODERN STANDALONE FEATURES</div>
+        <h1>Modern Angular Routing ⚡</h1>
+        <p>Simplified, powerful, and performance-oriented routing for modern apps.</p>
+    </header>
+
+    <!-- LIVE ACTIVITY LOG -->
+    <section class="log-section" id="log-section">
+        <div class="pipeline-header">
+            <div class="badge" style="background: #e0f2fe; color: #0369a1;">LIVE ACTIVITY</div>
+            <h2>Router Activity Log 📡</h2>
+            <p>See how Angular's Router thinks in real-time as you move around.</p>
+        </div>
+
+        <!-- <div class="log-container">
+            <div class="log-header">
+                <span class="status-dot pulsing"></span>
+                <span>Listening for Router Events...</span>
+                <button (click)="clearLogs()" class="clear-btn">Clear Logs</button>
+            </div>
+            <div class="log-list">
+                <div *ngFor="let log of logs()" class="log-entry" [ngClass]="log.type">
+                    <span class="log-time">{{ log.time }}</span>
+                    <span class="log-msg">{{ log.message }}</span>
+                </div>
+                <div *ngIf="logs().length === 0" class="empty-log">
+                    No activity yet. Try clicking the buttons below!
+                </div>
+            </div>
+        </div> -->
+
+        <div class="log-triggers">
+            <span>Try it:</span>
+            <button (click)="testNavigate('101')" class="trigger-btn">Navigate with Query (101)</button>
+            <button (click)="testNavigate('202')" class="trigger-btn">Navigate with Query (202)</button>
+        </div>
+    </section>
+
+    <section class="modern-features-section">
+        <div class="pipeline-header">
+            <div class="badge" style="background: #d1fae5; color: #065f46;">NEW IN ANGULAR 16+</div>
+            <h2>Modern Router Features ⚡</h2>
+            <p>Powerful utilities for Standalone components.</p>
+        </div>
+
+        <div class="methods-grid">
+            <!-- FEATURE 1: Input Binding -->
+            <div class="method-card feature-highlight">
+                <div class="method-header">
+                    <span class="type-badge modern">withComponentInputBinding()</span>
+                </div>
+                <h4>Simple Idea:</h4>
+                <p>URL data → directly goes into <code>@Input()</code></p>
+                <div class="feature-demo">
+                    <div class="url-bar">/product/<b>101</b>?filter=<b>active</b></div>
+                    <div class="arrow-down">⬇️</div>
+                    <code class="mini-code">@Input() id!: string; // 101</code>
+                    <code class="mini-code">@Input() filter?: string; // active</code>
+                </div>
+                <div class="code-example">
+                    <h5>Implementation:</h5>
+                    <pre class="block-code"><code>// 1. Enable in app.config.ts
+provideRouter(routes, withComponentInputBinding())
+
+// 2. Use in your component
+@Input() id!: string;</code></pre>
+                </div>
+            </div>
+
+            <!-- FEATURE 2: View Transitions -->
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge modern">withViewTransitions()</span>
+                </div>
+                <h4>Simple Idea:</h4>
+                <p>Adds smooth animation when changing pages (fade/transition).</p>
+                <div class="transition-viz">
+                    <div class="page-box old">Page A</div>
+                    <div class="sparkle">✨</div>
+                    <div class="page-box new">Page B</div>
+                </div>
+                <div class="code-example">
+                    <h5>Implementation:</h5>
+                    <pre class="block-code"><code>// Enable in app.config.ts
+provideRouter(routes, withViewTransitions())</code></pre>
+                </div>
+            </div>
+
+            <!-- FEATURE 3: Memory Scrolling -->
+            <div class="method-card">
+                <div class="method-header">
+                    <span class="type-badge modern">withInMemoryScrolling()</span>
+                </div>
+                <h4>Simple Idea:</h4>
+                <p>Remembers where you scrolled and handles anchor links.</p>
+                <ul class="feature-list">
+                    <li> <b>Enabled:</b> Back button → Old position</li>
+                    <li> <b>Anchor:</b> /page#section → auto scroll</li>
+                </ul>
+                <div class="code-example">
+                    <h5>Implementation:</h5>
+                    <pre class="block-code"><code>provideRouter(routes, withInMemoryScrolling({{ '{' }}
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled'
+{{ '}' }}))</code></pre>
+                </div>
+
+                <div class="detailed-explainer">
+                    <div class="explainer-header">🎯 What Happens?</div>
+                    <div class="step-box">
+                        <div class="step-title">🔹 1. Scroll Restore</div>
+                        <ul class="mini-list">
+                            <li>Go to <code>/page</code></li>
+                            <li>Scroll down half-way</li>
+                            <li>Navigate away (e.g., to <code>/about</code>)</li>
+                            <li>Click browser <b>BACK</b> button</li>
+                            <li>👉 <span class="highlight">Scroll position is restored automatically</span></li>
+                        </ul>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-title">🔹 2. Anchor Scrolling</div>
+                        <p>Link: <code>&lt;a routerLink="/page#section2"&gt;Go to Section 2&lt;/a&gt;</code></p>
+                        <p>👉 <span class="highlight">Page automatically scrolls to the ID matched section</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-container">
+            <h3>🔥 Final Simple Difference</h3>
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Core Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>withViewTransitions()</code></td>
+                        <td>✨ Smooth page animations (fade/slide)</td>
+                    </tr>
+                    <tr>
+                        <td><code>withInMemoryScrolling()</code></td>
+                        <td>🖱️ Precise scroll position control</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <!-- PUTTING IT ALL TOGETHER -->
+    <section class="integration-section">
+        <div class="pipeline-header">
+            <h2>Putting it All Together 🛠️</h2>
+            <p>How to declare your routes and navigate between them.</p>
+        </div>
+
+        <div class="integration-grid">
+            <div class="integration-card">
+                <h3>1. Route Declaration</h3>
+                <p>Define your path segments as usual. Angular will handle the binding automatically.</p>
+                <pre class="block-code"><code>// app.routes.ts
+export const routes: Routes = [
+  {{ '{' }} 
+    path: 'product/:productId', 
+    component: ProductComponent 
+  {{ '}' }}
+];</code></pre>
+            </div>
+
+            <div class="integration-card">
+                <h3>2. Navigation</h3>
+                <p>Navigate with parameters. The value '101' will be passed as 'productId'.</p>
+                <pre class="block-code"><code>&lt;!-- Declarative --&gt;
+&lt;a routerLink="/product/101"&gt;View Product&lt;/a&gt;
+
+// Imperative
+this.router.navigate(['/product', 101]);</code></pre>
+            </div>
+
+            <div class="integration-card">
+                <h3>3. Component Usage</h3>
+                <p>Simply use the <code>@Input()</code> with the <b>SAME NAME</b> as your path parameter.</p>
+                <pre class="block-code"><code>@Component(...)
+export class ProductComponent {{ '{' }}
+  // Matches :productId in route
+  @Input() productId!: string; 
+{{ '}' }}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <div class="pro-tip"
+        style="background: #059669; margin-top: 2rem; color: white; padding: 1.5rem; border-radius: 1rem;">
+        <strong>💡 WHY IT MATTERS:</strong> These features reduce boilerplate code and make your app feel
+        faster and more professional with minimal configuration.
+    </div>
+</div>

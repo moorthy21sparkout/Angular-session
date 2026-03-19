@@ -1,0 +1,39 @@
+<div class="demo-container">
+    <header class="demo-header">
+        <div class="badge">LIVE LAB: MODERN FEATURES</div>
+        <h1>Modern Routing Demo 🔬</h1>
+        <p>Test Scroll Restoration and Anchor Scrolling in real-time.</p>
+    </header>
+
+    <nav class="demo-nav">
+        <div class="nav-group">
+            <h3>⚓ Anchor Links</h3>
+            <div class="links">
+                <a *ngFor="let s of sections" [routerLink]="['/modern-demo']" [fragment]="s.id" class="demo-link">
+                    {{ s.title }}
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <h3>🔄 Scroll Test</h3>
+            <p>1. Scroll down deep into the page.</p>
+            <p>2. Click: <a routerLink="/theory" class="test-btn">Leave Demo</a></p>
+            <p>3. Click <b>Browser Back</b> to see it restore!</p>
+        </div>
+    </nav>
+
+    <main class="demo-content">
+        <section *ngFor="let s of sections" [id]="s.id" class="content-section">
+            <h2>{{ s.title }}</h2>
+            <div class="spacer"></div>
+            <p>{{ s.content }}</p>
+            <div class="spacer-large"></div>
+            <a href="#top" class="back-top">↑ Back to Top</a>
+        </section>
+    </main>
+
+    <footer class="demo-footer">
+        <p>End of demo content. Total height: ~5000px</p>
+    </footer>
+</div>

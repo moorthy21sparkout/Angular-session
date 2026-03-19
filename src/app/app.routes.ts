@@ -19,6 +19,8 @@ export const routes: Routes = [
     { path: 'products', loadComponent: () => import('./products/products').then(m => m.ProductsComponent) },
     { path: 'products/:id', loadComponent: () => import('./products/product-details').then(m => m.ProductDetailsComponent) },
     { path: 'users', loadComponent: () => import('./users/users').then(m => m.UsersComponent) },
+    { path: 'modern-routing', loadComponent: () => import('./routing-theory/modern-routing').then(m => m.ModernRoutingComponent) },
+    { path: 'modern-demo', loadComponent: () => import('./routing-theory/modern-demo').then(m => m.ModernDemoComponent) },
     { path: '', redirectTo: 'theory', pathMatch: 'full' },
     { path: '**', loadComponent: () => import('./not-found/not-found').then(m => m.PageNotFoundComponent) }
 ];
