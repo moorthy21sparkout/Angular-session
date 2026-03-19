@@ -23,6 +23,7 @@ import { trigger, state, style, animate, transition, keyframes } from '@angular/
 })
 export class RoutingTheoryComponent {
     private router = inject(Router);
+    private currentSimId = 100;
 
     activeSim = signal<string | null>(null);
     isAnimating = signal(false);
@@ -64,6 +65,25 @@ export class RoutingTheoryComponent {
             this.router.navigateByUrl('/routing/details', {
                 state: { type: 'state', val: 'Admin User Object' }
             });
+        }
+        else if (type === 'updateId') {
+            this.currentSimId++;
+            if (this.currentSimId === 101) {
+                // First click sets up initial state to 101
+                this.simTitle.set('Initial Parameter Load');
+                this.packetContent.set(`ID: 101`);
+                this.passCode.set(`this.router.navigate(['/routing/details', 101]);`);
+                this.getCode.set(`// Component created.\n// Snapshot and Subscribe are identical.`);
+                this.startAnim();
+                this.router.navigate(['/routing', 'details', '101']);
+            } else {
+                this.simTitle.set('Update Parameter (Component Reused)');
+                this.packetContent.set(`ID: ${this.currentSimId}`);
+                this.passCode.set(`// Navigate again:\nthis.router.navigate(['/routing/details', ${this.currentSimId}]);`);
+                this.getCode.set(`// Component REUSED! ngOnInit is skipped.\n// Snapshot = Stale, Subscribe = Updated`);
+                this.startAnim();
+                this.router.navigate(['/routing', 'details', this.currentSimId.toString()]);
+            }
         }
     }
 

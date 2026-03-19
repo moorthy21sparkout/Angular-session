@@ -14,6 +14,7 @@ export class RoutingChildComponent implements OnInit {
   private router = inject(Router);
 
   id = signal<string | null>(null);
+  snapshotId = signal<string | null>(null);
   query = signal<string | null>(null);
   stateData = signal<string | null>(null);
   type = signal<string | null>(null);
@@ -33,12 +34,22 @@ export class RoutingChildComponent implements OnInit {
   }
 
   ngOnInit() {
-    // GET ROUTE PARAMS (from /details/:id)
+    // GET INITIAL SNAPSHOT
+    const initialId = this.route.snapshot.paramMap.get('id');
+    if (initialId) {
+      this.snapshotId.set(initialId);
+    } else {
+      // if we're on /details but simulating param later
+      this.snapshotId.set('None');
+    }
+
+    // GET ROUTE PARAMS (from /details/:id) (SUBSCRIBE)
     this.route.params.subscribe(p => {
       console.log(' Receiver [ngOnInit] captured params:', p);
       if (p['id']) {
         this.id.set(p['id']);
         this.type.set('param');
+        // keep snapshotId what it was on init!
       }
     });
 

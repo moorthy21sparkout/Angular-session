@@ -125,6 +125,15 @@ For optional metadata (e.g., `/products?filter=blue`).
 - **Sending**: `this.router.navigate(['/products'], { queryParams: { filter: 'blue' } })`
 - **Receiving**: `this.route.queryParams.subscribe(...)`
 
+### `snapshot` vs `subscribe`
+When retrieving route parameters or query parameters, you have two options:
+- **`snapshot` (The Shortcut)**: Read the value *once* when the component is created. Best for simple cases where the route data never changes while the component is alive. 
+  Example: `this.route.snapshot.paramMap.get('id')`
+- **`subscribe` (The Observable)**: Listen for changes continuously. Angular *reuses* component instances if you navigate to the same component but with different parameters (e.g., from `/user/1` to `/user/2`), to save resources. When this happens, `ngOnInit` does *not* run again. A `snapshot` would keep the old ID (`1`), but a `subscribe` will emit the new ID (`2`), allowing you to update the view without a full page reload.
+
+> [!CAUTION]
+> Always use `subscribe` if your component has links that route to itself with different parameters!
+
 ### Navigation State
 For passing complex objects without showing them in the URL.
 

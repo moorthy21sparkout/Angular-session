@@ -22,6 +22,11 @@
                         (Query)</button>
                     <button (click)="simulatePass('state')" [class.active]="activeSim() === 'state'">Object
                         (State)</button>
+                    <hr style="margin: 0.5rem 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <button (click)="simulatePass('updateId')" [class.active]="activeSim() === 'updateId'"
+                        style="background: rgba(139, 92, 246, 0.2); border-color: #8b5cf6;">
+                        Simulate Component Reuse
+                    </button>
                 </div>
             </div>
 
@@ -56,6 +61,44 @@
                     <code>{{ getCode() }}</code>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- SNAPSHOT VS SUBSCRIBE -->
+    <section class="nav-methods-section" style="margin-bottom: 3rem;">
+        <div class="pipeline-header">
+            <h2>Snapshot vs Subscribe 📸</h2>
+            <p>Why use <code>subscribe</code> when we have <code>snapshot</code>?</p>
+        </div>
+
+        <div class="methods-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="method-card">
+                <div class="method-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <span class="type-badge absolute">Snapshot</span>
+                    <h3>The One-Time Read (Shortcut)</h3>
+                </div>
+                <p>Reads the route parameter <strong>only once</strong> when the component is created. Good for simple
+                    components where the route data never changes while the component is active.</p>
+                <code>this.route.snapshot.paramMap.get('id');</code>
+            </div>
+
+            <div class="method-card">
+                <div class="method-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <span class="type-badge declarative">Subscribe</span>
+                    <h3>The Continuous Listener (Observable)</h3>
+                </div>
+                <p>Listens for changes <strong>continuously</strong>. Angular reuses component instances if you navigate
+                    to the same route with different parameters (e.g., from <code>/user/1</code> to
+                    <code>/user/2</code>). <code>ngOnInit</code> won't run again, so a snapshot would be stale!
+                    Subscribe ensures you get the new data.
+                </p>
+                <code>this.route.params.subscribe(p => ...);</code>
+            </div>
+        </div>
+
+        <div class="pro-tip" style="margin-top: 1.5rem;">
+            <strong>💡 PRO TIP:</strong> Always use <code>subscribe</code> if your component has links that route to
+            itself with different parameters!
         </div>
     </section>
 
