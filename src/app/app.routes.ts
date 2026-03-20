@@ -21,6 +21,20 @@ export const routes: Routes = [
     { path: 'users', loadComponent: () => import('./users/users').then(m => m.UsersComponent) },
     { path: 'modern-routing', loadComponent: () => import('./routing-theory/modern-routing').then(m => m.ModernRoutingComponent) },
     { path: 'modern-demo', loadComponent: () => import('./routing-theory/modern-demo').then(m => m.ModernDemoComponent) },
+    {path: 'advance-route/:id', 
+        children:[
+
+            {
+                path: '',
+                loadComponent: () => import('./advance-route/advance-route').then(m => m.AdvanceRoute)
+            },
+            {
+                path: 'relative',
+                loadComponent: () => import('./relative/relative').then(m => m.Relative)
+            }
+
+        ]
+    },
     { path: '', redirectTo: 'theory', pathMatch: 'full' },
     { path: '**', loadComponent: () => import('./not-found/not-found').then(m => m.PageNotFoundComponent) }
 ];

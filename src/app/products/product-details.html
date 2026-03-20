@@ -1,0 +1,27 @@
+ <div class="product-details-container">
+      <h2>Product Details</h2>
+      
+      <div class="info-card">
+        <h3>1. Route Parameters (/:id)</h3>
+        <p>Current ID: <strong>{{ productId() }}</strong></p>
+      </div>
+
+      <div class="info-card">
+        <h3>2. Query Parameters (?from=...&mode=...)</h3>
+        <p>From: <strong>{{ queryParams().from || 'N/A' }}</strong></p>
+        <p>Mode: <strong>{{ queryParams().mode || 'N/A' }}</strong></p>
+      </div>
+
+      <div class="info-card">
+        <h3>3. Navigation State (Passed via Router)</h3>
+        <div *ngIf="productState(); else noState">
+          <p>Product Title (from state): <strong>{{ productState().title }}</strong></p>
+          <p>Product Price (from state): <strong>{{ productState().price | currency }}</strong></p>
+        </div>
+        <ng-template #noState>
+          <p>No state data found. Try navigating via the "NavigateByUrl" button in the products list.</p>
+        </ng-template>
+      </div>
+
+      <button (click)="goBack()" class="btn-back">Back to Products</button>
+    </div>

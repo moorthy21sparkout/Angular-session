@@ -5,6 +5,15 @@
         <p>Test Scroll Restoration and Anchor Scrolling in real-time.</p>
     </header>
 
+    <div class="cursor-pointer" (click)="goToadvanceRoutePage()">
+        Go to the Advanced Routing page with  pass  the query params value
+    </div>
+
+    <!-- [fragment] to scroll to a specific section in a page. -->
+     <!-- <h2 id="section1">Section 1</h2>
+<h2 id="section2">Section 2</h2>
+
+<a [routerLink]="['/home']" fragment="section2">Go to Section 2</a> -->
     <nav class="demo-nav">
         <div class="nav-group">
             <h3>⚓ Anchor Links</h3>
@@ -12,6 +21,9 @@
                 <a *ngFor="let s of sections" [routerLink]="['/modern-demo']" [fragment]="s.id" class="demo-link">
                     {{ s.title }}
                 </a>
+                <!-- <a *ngFor="let s of sections" (click)="scrollToSection(s.id)" class="demo-link">
+                    {{ s.title }}
+                </a> -->
             </div>
         </div>
 
